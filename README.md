@@ -4,7 +4,7 @@ A full-stack email scheduling application that lets users authenticate with Goog
 
 ---
 
-## ✨ Features
+##  Features
 
 ### Backend
 
@@ -34,7 +34,7 @@ A full-stack email scheduling application that lets users authenticate with Goog
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -50,7 +50,7 @@ A full-stack email scheduling application that lets users authenticate with Goog
 
 ---
 
-## 🏗️ Architecture
+##  Architecture
 
 ```text
                  ┌─────────────────────┐
@@ -85,7 +85,7 @@ A full-stack email scheduling application that lets users authenticate with Goog
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```text
 reachinbox-scheduler/
@@ -115,7 +115,7 @@ reachinbox-scheduler/
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 
@@ -130,7 +130,7 @@ Make sure Docker Desktop is running.
 
 ---
 
-## 🔐 Environment Variables
+##  Environment Variables
 
 ### Backend
 
@@ -186,7 +186,7 @@ NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-client-id
 
 ---
 
-## ▶️ Running the Backend
+## Running the Backend
 
 From the project root:
 
@@ -226,7 +226,7 @@ docker compose logs worker
 
 ---
 
-## 🗄️ Database Setup
+##  Database Setup
 
 Synchronize the Prisma schema:
 
@@ -244,7 +244,7 @@ The seed creates an Ethereal test sender.
 
 ---
 
-## 💻 Running the Frontend
+## Running the Frontend
 
 Open another terminal:
 
@@ -272,7 +272,7 @@ http://localhost:3000
 
 ---
 
-## 🔑 Google OAuth Setup
+##  Google OAuth Setup
 
 Google OAuth is used for application login.
 
@@ -296,7 +296,7 @@ backend/.env
 
 ---
 
-## 📧 Ethereal Email
+##  Ethereal Email
 
 Ethereal Email is used as a test SMTP service.
 
@@ -314,7 +314,7 @@ After sending an email, use the Ethereal preview URL to inspect the message.
 
 ---
 
-# ⚙️ How Scheduling Works
+#  How Scheduling Works
 
 1. User signs in with Google.
 2. User opens the dashboard.
@@ -329,7 +329,7 @@ After sending an email, use the Ethereal preview URL to inspect the message.
 
 ---
 
-# 🔄 Persistence After Restart
+#  Persistence After Restart
 
 Scheduled email information is persisted in PostgreSQL rather than being kept only in application memory.
 
@@ -371,7 +371,7 @@ Redis is used for fast rate-limit tracking while persistent database records pro
 
 ---
 
-# ⏱️ Email Delay
+#  Email Delay
 
 The compose form allows a delay between email jobs.
 
@@ -391,7 +391,7 @@ This prevents a large number of messages from being sent simultaneously.
 
 ---
 
-# 🔄 Concurrency
+# Concurrency
 
 Email sending is separated from the API using BullMQ workers.
 
@@ -413,7 +413,7 @@ Rate limits and configured delays are applied while processing jobs.
 
 ---
 
-# 📊 Dashboard
+# Dashboard
 
 The dashboard provides:
 
@@ -427,7 +427,7 @@ The dashboard provides:
 
 ---
 
-# 📝 Compose Email
+#  Compose Email
 
 A campaign can contain:
 
@@ -446,7 +446,7 @@ Recipients can be imported using:
 
 ---
 
-# 🧪 Testing
+#  Testing
 
 A typical test flow is:
 
@@ -474,7 +474,7 @@ Ethereal Email Preview
 
 ---
 
-# 🔁 Restart Test
+#  Restart Test
 
 To verify persistence:
 
@@ -500,7 +500,7 @@ The scheduled campaign remains stored in PostgreSQL and pending work can continu
 
 ---
 
-# 📋 Assignment Feature Mapping
+#  Assignment Feature Mapping
 
 | Requirement | Implementation |
 |---|---|
@@ -519,7 +519,7 @@ The scheduled campaign remains stored in PostgreSQL and pending work can continu
 
 ---
 
-# ⚠️ Assumptions & Trade-offs
+#  Assumptions & Trade-offs
 
 - Ethereal Email is used for testing instead of a production email provider.
 - Google OAuth is configured for local development.
@@ -531,7 +531,7 @@ The scheduled campaign remains stored in PostgreSQL and pending work can continu
 
 ---
 
-## 📌 Useful Commands
+##  Useful Commands
 
 ### Start everything
 
@@ -584,6 +584,4 @@ npm run dev
 
 
 
-11. Restarting the services
-12. Confirming scheduled data persists
-13. Briefly demonstrating rate limiting or delay behavior
+
