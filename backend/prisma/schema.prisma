@@ -1,0 +1,99 @@
+// Prisma schema for the ReachInbox Email Scheduler
+// Works with PostgreSQL (recommended) or MySQL — see README for switching.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum EmailStatus {
+  PENDING     // stored, not yet queued
+  QUEUED      // BullMQ job created (delayed)
+  DELAYED     // requeued because hourly limit was hit
+  PROCESSING  // worker picked it up
+  SENT
+  FAILED
+}
+
+model User {
+  id        String   @id @default(uuid())
+  googleId  String   @unique
+  email     String   @unique
+  name      String
+  avatarUrl String?
+  createdAt DateTime @default(now())
+
+  campaigns Campaign[]
+}
+
+// A "sender" is an Ethereal (or real SMTP) mailbox emails go out from.
+// Rate limits are enforced per sender.
+model Sender {
+  id           String   @id @default(uuid())
+  label        String
+  smtpHost     String
+  smtpPort     Int
+  smtpUser     String
+  smtpPass     String
+  maxPerHour   Int      @default(200) // configurable per-sender hourly cap
+  createdAt    DateTime @default(now())
+
+  emails ScheduledEmail[]
+}
+
+// A batch of emails uploaded together via the Compose UI (CSV of leads).
+model Campaign {
+  id            String   @id @default(uuid())
+  userId        String
+  subject       String
+  body          String   @db.Text
+  delayMs       Int      @default(2000) // min delay between individual sends
+  hourlyLimit   Int      @default(200)  // fallback if sender-level limit not set
+  startTime     DateTime
+  createdAt     DateTime @default(now())
+
+  user   User             @relation(fields: [userId], references: [id])
+  emails ScheduledEmail[]
+}
+
+// One row per recipient. jobId maps 1:1 to the BullMQ job for idempotency —
+// we never enqueue a job for a row that already has a jobId.
+model ScheduledEmail {
+  id            String      @id @default(uuid())
+  campaignId    String
+  senderId      String
+  recipient     String
+  subject       String
+  body          String      @db.Text
+  scheduledFor  DateTime
+  status        EmailStatus @default(PENDING)
+  jobId         String?     @unique // BullMQ job id — idempotency key
+  attempts      Int         @default(0)
+  lastError     String?
+  sentAt        DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  campaign Campaign @relation(fields: [campaignId], references: [id])
+  sender   Sender   @relation(fields: [senderId], references: [id])
+
+  @@index([status])
+  @@index([senderId, status])
+}
+
+// Durable counter for the hourly rate limit, keyed by sender + hour window.
+// Redis holds the hot path (INCR), this table is the source of truth used
+// on worker boot to rebuild Redis counters after a restart so limits are
+// never silently reset.
+model RateWindow {
+  id        String   @id @default(uuid())
+  senderId  String
+  windowKey String   // e.g. "2026-08-15T10" (UTC hour bucket)
+  count     Int      @default(0)
+
+  @@unique([senderId, windowKey])
+}
