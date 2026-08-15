@@ -1,5 +1,5 @@
-1. Tech Stack
-                         Backend
+**1. Tech Stack**
+                         **Backend**
 Node.js
 Express
 TypeScript
@@ -10,7 +10,7 @@ BullMQ
 Nodemailer
 Google OAuth
 JWT authentication
-                         Frontend
+                         **Frontend**
 Next.js
 React
 TypeScript
@@ -21,7 +21,7 @@ Docker
 Docker Compose
 
 
-2. Project Structure
+**2. Project Structure**
 reachinbox-scheduler/
 │
 ├── backend/
@@ -54,11 +54,12 @@ reachinbox-scheduler/
 │
 ├── docker-compose.yml
 └── README.md
-3. How to Run the Project
+
+
+**3. How to Run the Project**
 Prerequisites
 
-Install:
-
+Install:-
 Node.js
 npm
 Docker Desktop
@@ -66,7 +67,7 @@ Google account for OAuth testing
 
 Make sure Docker Desktop is running before starting the backend services.
 
-4. Backend Setup
+**4. Backend Setup**
 
 Go to the backend directory:
 
@@ -242,7 +243,7 @@ NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-client-id
 
 The OAuth configuration must be completed before using the Sign in with Google button.
 
-11. Architecture Overview
+**11. Architecture Overview**
                  ┌─────────────────────┐
                  │      Next.js        │
                  │      Frontend       │
